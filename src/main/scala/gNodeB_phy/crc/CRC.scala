@@ -1,5 +1,6 @@
+/* This module is a translation of Adam Greig's (agg) https://github.com/adamgreig Amaranth implementation of the CRC
+ */
 package gNodeB_phy.crc
-
 import Chisel.Reverse
 import chisel3._
 import scala.collection.mutable.ArrayBuffer
@@ -174,22 +175,22 @@ class CRC(
 
     Parameters
     ----------
-    n : int
+    n : Int
         Bit width of CRC word. Also known as "width" in the Williams model.
-    m : int
+    m : Int
         Bit width of data words.
-    poly : int
+    polynomial : Int
         CRC polynomial to use, n bits long, without the implicit x**n term.
         Polynomial is always specified with the highest order terms in the
-        most significant bit positions; use ``ref_in`` and ``ref_out`` to
+        most significant bit positions; use ``reflectInput`` and ``reflectOutput`` to
         perform a least significant bit first computation.
-    init : int
+    init : Int
         Initial value of CRC register at reset. Most significant bit always
         corresponds to the highest order term in the CRC register.
-    ref_in : bool
+    reflectInput : Boolean
         If True, the input data words are bit-reflected, so that they are
         processed least significant bit first.
-    ref_out : bool
+    reflectOutput : Boolean
         If True, the output CRC is bit-reflected, so the least-significant bit
         of the output is the highest-order bit of the CRC register.
         Note that this reflection is performed over the entire CRC register;
@@ -197,23 +198,20 @@ class CRC(
         multi-word value, so for example the reflected 16-bit output 0x4E4C
         would be transmitted as the two octets 0x4C 0x4E, each transmitted
         least significant bit first.
-    xor_out : int
+    xorOut : Int
         The output CRC will be the CRC register XOR'd with this value, applied
         after any output bit-reflection.
 
     Attributes
     ----------
-    reset : Signal(), in
-        Assert to re-initialise the CRC to the initial value.
-    data : Signal(m), in
+    data :
         Data word to add to CRC when ``valid`` is asserted.
-    valid : Signal(), in
+    valid :
         Assert when ``data`` is valid to add the data word to the CRC.
-        Ignored when ``reset`` is asserted.
-    crc : Signal(n), out
+    crc :
         Registered CRC output value, updated one clock cycle after ``valid``
         becomes asserted.
-    matches : Signal(), out
+    matches :
         Asserted if the current CRC value indicates a valid codeword has been
         received.
     */
@@ -279,6 +277,3 @@ class CRC(
   object Generate extends App{
   emitVerilog(new CRC(16,16,0x1021,0,false,false,0),Array("--target-dir","generated"))
 }
-
-
-
