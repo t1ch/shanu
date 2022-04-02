@@ -1,6 +1,6 @@
 /* This module is a translation of Adam Greig's (agg) https://github.com/adamgreig Amaranth implementation of the CRC
  */
-package gNodeB_phy.crc
+package phy.crc
 import Chisel.Reverse
 import chisel3._
 import scala.collection.mutable.ArrayBuffer
