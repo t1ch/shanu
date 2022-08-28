@@ -220,25 +220,28 @@ class CRC(
     val valid = Input(Bool())
     val crc = Output(UInt(n.W))
     val matches = Output(Bool())
+
   })
 
   val crcReg = RegInit(init.U(n.W))
-  val dataIn = Reg(UInt(m.W))
+  val dataInReg = Reg(UInt(m.W))
   val softwareCRC = new SoftwareCRC(n, m, polynomial, init, reflectInput, reflectOutput, xorOut)
 
   //Optionally bit -reflect input words.
   if (reflectInput) {
-    dataIn := Reverse(io.data)
+    dataInReg := Reverse(io.data)
   } else {
-    dataIn := io.data
+    dataInReg := io.data
   }
+
 
   //Optionally bit -reflect and then XOR the output from the state.
   if (reflectOutput) {
-    io.crc := Reverse(crcReg) ^ xorOut.U
+    io.crc := Reverse(crcReg) ^ xorOut.asUInt
   } else {
-    io.crc := crcReg ^ xorOut.U
+    io.crc := crcReg ^ xorOut.asUInt
   }
+
   //Compute CRC matrices and expected residue using the software model
   val (f, g) = softwareCRC.generateMatrices()
   val residue = softwareCRC.residue()
@@ -258,7 +261,7 @@ class CRC(
       }
       for (j <- 0 until m) {
         if (g(j)(i)) {
-          bit ^= Mux(dataIn(j), true.B, false.B)
+          bit ^= Mux(dataInReg(j), true.B, false.B)
         }
       }
       crcRegNext(i) := bit
@@ -272,8 +275,4 @@ class CRC(
   } else {
     io.matches := (crcReg === residue.U)
   }
-}
-
-  object Generate extends App{
-  emitVerilog(new CRC(16,16,0x1021,0,false,false,0),Array("--target-dir","generated"))
 }
