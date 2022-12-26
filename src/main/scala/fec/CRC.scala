@@ -1,8 +1,10 @@
 /* This module is a translation of Adam Greig's (agg) https://github.com/adamgreig Amaranth implementation of the CRC
  */
-package phy.crc
+package fec
+
 import Chisel.Reverse
 import chisel3._
+
 import scala.collection.mutable.ArrayBuffer
 
 class SoftwareCRC(

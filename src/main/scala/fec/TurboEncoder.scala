@@ -1,4 +1,6 @@
-package lte.fec
+
+package fec
+
 import chisel3._
 import chisel3.util.MuxCase
 
@@ -46,4 +48,12 @@ class InternalInterleaver extends Module{
   val f1f2 = MuxCase(default,cases)
 
   io.dataOutIdx := (f1f2.f1.asUInt * io.dataInIdx + (f1f2.f2.asUInt * (io.dataInIdx * io.dataInIdx))) % io.dataInLengthK
+}
+
+class TurboEncoder extends Module{
+  val io = IO(new Bundle{
+    val codeBlockLength = Input(UInt(13.W))
+  })
+
+
 }

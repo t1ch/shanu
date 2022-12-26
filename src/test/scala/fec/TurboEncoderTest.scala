@@ -1,4 +1,5 @@
-package lte.fec
+package fec
+
 import chisel3._
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
