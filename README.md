@@ -7,6 +7,7 @@ The goal is to provide gateware for use with off the shelf software defined radi
 #### 4G LTE Downlink TX:
 - [ ] PDSCH:
   - [x] CRC (Compute and validate)
+  - [ ] Code Block Segmentation
   - [ ] Turbo Coding:
     - [ ] Constituent Encoder
     - [ ] Interleaver
